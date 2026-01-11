@@ -1,23 +1,18 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"morhaat.com/mh-ui-service/src/config"
+	"morhaat.com/mh-ui-service/src/utils"
+
+	"morhaat.com/mh-ui-service/src/router"
 )
 
 func main() {
-	//gin.SetMode(gin.ReleaseMode)
-	server := gin.Default()
-	server.GET("/", home)
-	server.Run(":8080")
-}
-
-func home(context *gin.Context) {
-	context.JSON(200, gin.H{
-		"message": "Welcome to the home page!",
-		"body": map[string]interface{}{
-			"content": "This is the body content of the home page.",
-			"status":  "active",
-			"tags":    []string{"home", "welcome", "gin"},
-		},
-	})
+	utils.InitLogger()
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		utils.Log.Fatalf("Failed to load configuration: %v", err)
+	}
+	utils.Log.Infof("Configuration loaded: %+v", cfg)
+	router.ConfigureRouter()
 }

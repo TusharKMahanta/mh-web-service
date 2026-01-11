@@ -1,0 +1,3 @@
+server:
+  mode: info
+  env: prod
